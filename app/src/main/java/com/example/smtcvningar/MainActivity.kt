@@ -171,19 +171,43 @@ fun ExerciseDetailScreen(
             fontSize = 18.sp
         )
 
+        val focusSteps = listOf(
+            "Sitt bekvämt.",
+            "Lägg märke till ett ljud långt bort.",
+            "Lägg märke till ett ljud nära dig.",
+            "Titta på ett föremål framför dig.",
+            "Lägg märke till känslan i dina fötter.",
+            "Flytta fokus mellan ljud, syn och kropp."
+        )
+
+        var currentStep by remember { mutableStateOf(0) }
+
         if (exercise.title == "Flytta fokus") {
-            Text("1. Sitt bekvämt.")
-            Text("2. Lägg märke till ett ljud långt bort.")
-            Text("3. Lägg märke till ett ljud nära dig.")
-            Text("4. Titta på ett föremål framför dig.")
-            Text("5. Lägg märke till känslan i dina fötter.")
-            Text("6. Flytta fokus mellan ljud, syn och kropp.")
+            Text(
+                text = "Steg ${currentStep + 1} av ${focusSteps.size}",
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = focusSteps[currentStep],
+                fontSize = 20.sp
+            )
+
+            if (currentStep < focusSteps.lastIndex) {
+                Button(onClick = { currentStep++ }) {
+                    Text("Nästa")
+                }
+            } else {
+                Button(onClick = onBackClick) {
+                    Text("Klar")
+                }
+            }
         } else {
             Text("Övningsinnehåll kommer snart.")
-        }
 
-        Button(onClick = onBackClick) {
-            Text("Tillbaka")
+            Button(onClick = onBackClick) {
+                Text("Tillbaka")
+            }
         }
     }
 }
