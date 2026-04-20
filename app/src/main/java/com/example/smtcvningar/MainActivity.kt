@@ -23,6 +23,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smtcvningar.ui.theme.SMTCÖvningarTheme
 
+
+
+data class Exercise(
+    val title: String,
+    val description: String
+)
+
+val exercises = listOf(
+    Exercise(
+        title = "Flytta fokus",
+        description = "Öva på att flytta uppmärksamheten mellan olika saker."
+    ),
+    Exercise(
+        title = "Lägg märke till tanken",
+        description = "Öva på att notera en tanke utan att fastna i den."
+    ),
+    Exercise(
+        title = "Skjut upp grubblande",
+        description = "Öva på att inte gå in i oro direkt."
+    )
+)
+
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +78,7 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(vertical = 24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -82,8 +106,7 @@ fun ExercisesScreen(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Övningar",
@@ -91,9 +114,19 @@ fun ExercisesScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = "Här kommer dina MCT-övningar att visas.",
-            modifier = Modifier.padding(top = 16.dp)
-        )
+        exercises.forEach { exercise ->
+            Button(
+                onClick = { },
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Text(
+                        text = exercise.title,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = exercise.description)
+                }
+            }
+        }
     }
 }
