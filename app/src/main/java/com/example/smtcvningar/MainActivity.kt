@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smtcvningar.ui.theme.SMTCÖvningarTheme
 
-
-
 data class Exercise(
     val title: String,
     val description: String
@@ -45,8 +43,6 @@ val exercises = listOf(
     )
 )
 
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +50,33 @@ class MainActivity : ComponentActivity() {
         setContent {
             SMTCÖvningarTheme {
                 var showExercises by remember { mutableStateOf(false) }
+                var selectedExercise by remember { mutableStateOf<Exercise?>(null) }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    if (showExercises) {
-                        ExercisesScreen(modifier = Modifier.padding(innerPadding))
-                    } else {
-                        HomeScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onStartClick = { showExercises = true }
-                        )
+                    when {
+                        selectedExercise != null -> {
+                            ExerciseDetailScreen(
+                                exercise = selectedExercise!!,
+                                modifier = Modifier.padding(innerPadding),
+                                onBackClick = { selectedExercise = null }
+                            )
+                        }
+
+                        showExercises -> {
+                            ExercisesScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                onExerciseClick = { exercise ->
+                                    selectedExercise = exercise
+                                }
+                            )
+                        }
+
+                        else -> {
+                            HomeScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                onStartClick = { showExercises = true }
+                            )
+                        }
                     }
                 }
             }
@@ -78,7 +92,7 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 24.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -101,7 +115,10 @@ fun HomeScreen(
 }
 
 @Composable
-fun ExercisesScreen(modifier: Modifier = Modifier) {
+fun ExercisesScreen(
+    modifier: Modifier = Modifier,
+    onExerciseClick: (Exercise) -> Unit
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -116,8 +133,8 @@ fun ExercisesScreen(modifier: Modifier = Modifier) {
 
         exercises.forEach { exercise ->
             Button(
-                onClick = { },
-                modifier = Modifier.fillMaxSize()
+                onClick = { onExerciseClick(exercise) },
+                modifier = Modifier.padding(vertical = 4.dp)
             ) {
                 Column(modifier = Modifier.padding(8.dp)) {
                     Text(
@@ -127,6 +144,46 @@ fun ExercisesScreen(modifier: Modifier = Modifier) {
                     Text(text = exercise.description)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ExerciseDetailScreen(
+    exercise: Exercise,
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = exercise.title,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            text = exercise.description,
+            fontSize = 18.sp
+        )
+
+        if (exercise.title == "Flytta fokus") {
+            Text("1. Sitt bekvämt.")
+            Text("2. Lägg märke till ett ljud långt bort.")
+            Text("3. Lägg märke till ett ljud nära dig.")
+            Text("4. Titta på ett föremål framför dig.")
+            Text("5. Lägg märke till känslan i dina fötter.")
+            Text("6. Flytta fokus mellan ljud, syn och kropp.")
+        } else {
+            Text("Övningsinnehåll kommer snart.")
+        }
+
+        Button(onClick = onBackClick) {
+            Text("Tillbaka")
         }
     }
 }
