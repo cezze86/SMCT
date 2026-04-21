@@ -138,13 +138,36 @@ fun HomeScreen(
         Text(
             text = "MCT Övningar",
             fontSize = 28.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
-            text = "Lär dig grunderna i metakognitiv terapi och öva enkla moment steg för steg.",
-            modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
+            text = "Enkla övningar inspirerade av metakognitiv terapi för dig som vill minska oro, grubblande och stress.",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             fontSize = 18.sp,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = "Metakognitiv terapi fokuserar på hur du hanterar tankar, snarare än att analysera varje tanke i detalj. Här får du steg för steg-övningar som hjälper dig träna uppmärksamhet, släppa taget om grubblande och skapa bättre vanor.",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = "Vi börjar med grunden: sömn och återhämtning.",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 24.dp),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
 
@@ -152,7 +175,7 @@ fun HomeScreen(
             onClick = onStartClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Börja")
+            Text("Kom igång")
         }
     }
 }
