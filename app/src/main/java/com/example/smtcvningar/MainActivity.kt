@@ -51,14 +51,27 @@ class MainActivity : ComponentActivity() {
             SMTCÖvningarTheme {
                 var showExercises by remember { mutableStateOf(false) }
                 var selectedExercise by remember { mutableStateOf<Exercise?>(null) }
+                var showReflection by remember { mutableStateOf(false) }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when {
+                        showReflection && selectedExercise != null -> {
+                            ReflectionScreen(
+                                exercise = selectedExercise!!,
+                                modifier = Modifier.padding(innerPadding),
+                                onDoneClick = {
+                                    showReflection = false
+                                    selectedExercise = null
+                                }
+                            )
+                        }
+
                         selectedExercise != null -> {
                             ExerciseDetailScreen(
                                 exercise = selectedExercise!!,
                                 modifier = Modifier.padding(innerPadding),
-                                onBackClick = { selectedExercise = null }
+                                onBackClick = { selectedExercise = null },
+                                onCompleteClick = { showReflection = true }
                             )
                         }
 
@@ -152,7 +165,8 @@ fun ExercisesScreen(
 fun ExerciseDetailScreen(
     exercise: Exercise,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onCompleteClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -198,15 +212,69 @@ fun ExerciseDetailScreen(
                     Text("Nästa")
                 }
             } else {
-                Button(onClick = onBackClick) {
+                Button(onClick = onCompleteClick) {
                     Text("Klar")
                 }
+            }
+
+            Button(onClick = onBackClick) {
+                Text("Tillbaka")
             }
         } else {
             Text("Övningsinnehåll kommer snart.")
 
             Button(onClick = onBackClick) {
                 Text("Tillbaka")
+            }
+        }
+    }
+}
+
+@Composable
+fun ReflectionScreen(
+    exercise: Exercise,
+    modifier: Modifier = Modifier,
+    onDoneClick: () -> Unit
+) {
+    var reflection by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = "Reflektion",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            text = "Hur kändes övningen \"${exercise.title}\"?",
+            fontSize = 18.sp
+        )
+
+        Button(onClick = { reflection = "Lätt" }) {
+            Text("Lätt")
+        }
+
+        Button(onClick = { reflection = "Ganska lätt" }) {
+            Text("Ganska lätt")
+        }
+
+        Button(onClick = { reflection = "Svårt" }) {
+            Text("Svårt")
+        }
+
+        if (reflection.isNotEmpty()) {
+            Text(
+                text = "Du valde: $reflection",
+                fontWeight = FontWeight.Bold
+            )
+
+            Button(onClick = onDoneClick) {
+                Text("Tillbaka till övningar")
             }
         }
     }
