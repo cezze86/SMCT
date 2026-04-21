@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smtcvningar.ui.theme.SMTCÖvningarTheme
@@ -143,7 +144,8 @@ fun HomeScreen(
         Text(
             text = "Lär dig grunderna i metakognitiv terapi och öva enkla moment steg för steg.",
             modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
         )
 
         Button(
@@ -180,12 +182,23 @@ fun ExercisesScreen(
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
             ) {
-                Column(modifier = Modifier.padding(8.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = exercise.title,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    Text(text = exercise.description)
+                    Text(
+                        text = exercise.description,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }
