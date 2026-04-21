@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -103,7 +104,8 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.padding(innerPadding),
                                 onExerciseClick = { exercise ->
                                     selectedExercise = exercise
-                                }
+                                },
+                                onBackClick = { showExercises = false }
                             )
                         }
 
@@ -144,7 +146,10 @@ fun HomeScreen(
             fontSize = 18.sp
         )
 
-        Button(onClick = onStartClick) {
+        Button(
+            onClick = onStartClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Börja")
         }
     }
@@ -153,7 +158,8 @@ fun HomeScreen(
 @Composable
 fun ExercisesScreen(
     modifier: Modifier = Modifier,
-    onExerciseClick: (Exercise) -> Unit
+    onExerciseClick: (Exercise) -> Unit,
+    onBackClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -170,7 +176,9 @@ fun ExercisesScreen(
         exercises.forEach { exercise ->
             Button(
                 onClick = { onExerciseClick(exercise) },
-                modifier = Modifier.padding(vertical = 4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
             ) {
                 Column(modifier = Modifier.padding(8.dp)) {
                     Text(
@@ -180,6 +188,13 @@ fun ExercisesScreen(
                     Text(text = exercise.description)
                 }
             }
+        }
+
+        Button(
+            onClick = onBackClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Till startsidan")
         }
     }
 }
@@ -191,6 +206,8 @@ fun ExerciseDetailScreen(
     onBackClick: () -> Unit,
     onCompleteClick: () -> Unit
 ) {
+    var currentStep by remember { mutableStateOf(0) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -208,47 +225,37 @@ fun ExerciseDetailScreen(
             fontSize = 18.sp
         )
 
-        val focusSteps = listOf(
-            "Sitt bekvämt.",
-            "Lägg märke till ett ljud långt bort.",
-            "Lägg märke till ett ljud nära dig.",
-            "Titta på ett föremål framför dig.",
-            "Lägg märke till känslan i dina fötter.",
-            "Flytta fokus mellan ljud, syn och kropp."
+        Text(
+            text = "Steg ${currentStep + 1} av ${exercise.steps.size}",
+            fontWeight = FontWeight.Bold
         )
 
-        var currentStep by remember { mutableStateOf(0) }
+        Text(
+            text = exercise.steps[currentStep],
+            fontSize = 20.sp
+        )
 
-        if (exercise.title == "Flytta fokus") {
-            Text(
-                text = "Steg ${currentStep + 1} av ${focusSteps.size}",
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = focusSteps[currentStep],
-                fontSize = 20.sp
-            )
-
-            if (currentStep < focusSteps.lastIndex) {
-                Button(onClick = { currentStep++ }) {
-                    Text("Nästa")
-                }
-            } else {
-                Button(onClick = onCompleteClick) {
-                    Text("Klar")
-                }
-            }
-
-            Button(onClick = onBackClick) {
-                Text("Tillbaka")
+        if (currentStep < exercise.steps.lastIndex) {
+            Button(
+                onClick = { currentStep++ },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Nästa")
             }
         } else {
-            Text("Övningsinnehåll kommer snart.")
-
-            Button(onClick = onBackClick) {
-                Text("Tillbaka")
+            Button(
+                onClick = onCompleteClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Klar")
             }
+        }
+
+        Button(
+            onClick = onBackClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Tillbaka")
         }
     }
 }
@@ -278,15 +285,24 @@ fun ReflectionScreen(
             fontSize = 18.sp
         )
 
-        Button(onClick = { reflection = "Lätt" }) {
+        Button(
+            onClick = { reflection = "Lätt" },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Lätt")
         }
 
-        Button(onClick = { reflection = "Ganska lätt" }) {
+        Button(
+            onClick = { reflection = "Ganska lätt" },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Ganska lätt")
         }
 
-        Button(onClick = { reflection = "Svårt" }) {
+        Button(
+            onClick = { reflection = "Svårt" },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Svårt")
         }
 
@@ -296,7 +312,10 @@ fun ReflectionScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Button(onClick = onDoneClick) {
+            Button(
+                onClick = onDoneClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Tillbaka till övningar")
             }
         }
