@@ -25,21 +25,44 @@ import com.example.smtcvningar.ui.theme.SMTCÖvningarTheme
 
 data class Exercise(
     val title: String,
-    val description: String
+    val description: String,
+    val steps: List<String>
 )
 
 val exercises = listOf(
     Exercise(
         title = "Flytta fokus",
-        description = "Öva på att flytta uppmärksamheten mellan olika saker."
+        description = "Öva på att flytta uppmärksamheten mellan olika saker.",
+        steps = listOf(
+            "Sitt bekvämt.",
+            "Lägg märke till ett ljud långt bort.",
+            "Lägg märke till ett ljud nära dig.",
+            "Titta på ett föremål framför dig.",
+            "Lägg märke till känslan i dina fötter.",
+            "Flytta fokus mellan ljud, syn och kropp."
+        )
     ),
     Exercise(
         title = "Lägg märke till tanken",
-        description = "Öva på att notera en tanke utan att fastna i den."
+        description = "Öva på att notera en tanke utan att fastna i den.",
+        steps = listOf(
+            "Sitt lugnt och bekvämt.",
+            "Lägg märke till en tanke som dyker upp.",
+            "Säg tyst för dig själv: det där var en tanke.",
+            "Låt tanken finnas utan att analysera den.",
+            "Flytta tillbaka fokus till det du gör."
+        )
     ),
     Exercise(
         title = "Skjut upp grubblande",
-        description = "Öva på att inte gå in i oro direkt."
+        description = "Öva på att inte gå in i oro direkt.",
+        steps = listOf(
+            "Lägg märke till att du börjar grubbla.",
+            "Säg till dig själv att du kan ta det senare.",
+            "Bestäm en tid då du får tänka på det.",
+            "Återgå till det du höll på med.",
+            "Öva på att låta tanken vänta."
+        )
     )
 )
 
